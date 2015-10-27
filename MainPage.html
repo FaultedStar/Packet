@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <title>MainPage</title>
+ 	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/Style.css" rel="stylesheet">
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+ 
+<!--API SCRIPT -->
+
+ <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+ <script type="text/javascript" src="gvizapi.js"></script>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+     <script type="text/javascript">
+    
+    // // Load the Visualization API and the piechart package.
+    // google.load('visualization', '1', {'packages':['corechart']});
+      
+    // // Set a callback to run when the Google Visualization API is loaded.
+    // google.setOnLoadCallback(drawChart);
+      
+    // function drawChart() {
+    //   var jsonData = $.ajax({
+    //       url: "getData.php",
+    //       dataType: "json",
+    //       async: false
+    //       }).responseText;
+          
+    //   // Create our data table out of JSON data loaded from server.
+    //   var data = new google.visualization.DataTable(jsonData);
+
+    //   // Instantiate and draw our chart, passing in some options.
+    //   var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+    //   chart.draw(data, {width: 400, height: 240});
+    // }
+
+   
+</script>
+  <script  type="text/javascript">
+
+  </script>
+
+<!--this is the get JSON make pretty script -->
+<script>
+var xmlhttp = new XMLHttpRequest();
+
+
+var prm = prompt("Please enter enter file to analize", "example.txt");
+if (prm != null) {
+   var url = prm;
+}
+//var url = "example.txt";
+
+
+xmlhttp.onreadystatechange = function() {
+    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+        var myArr  = JSON.parse(xmlhttp.responseText);
+        displayData(myArr);
+    }
+}
+
+xmlhttp.open("GET", url, true);
+xmlhttp.send();
+
+var  array = {};
+function displayData(arr) {
+    array = arr;
+
+}
+    
+google.load('visualization', '1.0', {'packages':['corechart']});
+
+// Set a callback to run when the Google Visualization API is loaded.
+google.setOnLoadCallback(drawChart);
+// Callback that creates and populates a data table,// instantiates the pie chart, passes in the data and
+// draws it.
+function drawChart() {
+  var out = "";
+    var i;
+    var searches = new Array();
+    var arrayIndex = 0;
+      $.each(array , function(key, value){
+        $.each(value , function(k,val){
+
+          var timeStampValue = 304;
+          $.each(val , function(index , v){
+
+
+            if(index == "id"){
+              $.each(v , function(idKey , idValue){
+                 $.each(idValue , function(tKey , tVal){
+                    timeStampValue = tVal;
+                  });
+              });
+            }
+            if (index=="query_text"){
+              for(i = 0; i < searches.length; i++){
+                if(searches[i][0] == v){
+                  searches[i][1] = searches[i][1] + 1;
+                  searches[i][4] = searches[i][4] + 1;
+                }
+              }
+
+              searches[arrayIndex] = new Array(v, 1 , parseInt(timeStampValue), parseInt(timeStampValue) , 1);
+              arrayIndex++;
+            }
+            
+          });
+        });
+      });
+
+    $.each(searches , function(key,value){
+       out += '<a>' + key+ " : " + value + '</a><br>' ;
+    });
+    document.getElementById("data").innerHTML = out;
+  // Create the data table.
+  var data = new google.visualization.DataTable();
+  data.addColumn('string', 'Query Text');
+  data.addColumn('number', 'Number of Times Searched');
+  data.addColumn('number', 'Timestamp');
+  data.addColumn('number', 'Color Gradient');
+  data.addColumn('number', 'Radius');
+  var searchLimit = 70;
+
+  for(i = 0; i < searchLimit; i++){
+    data.addRow([searches[i][0] , searches[i][1] , searches[i][2], searches[i][3] , searches[i][4]*5 ] );
+  }
+  // Set chart options
+  var options = {'title':'Chart of most recent searches',
+                 'width':1000,
+                 'height':700,
+                 'hAxis': {title: 'Number of searches'},
+                 'vAxis': {title: 'Time Stamp'},
+                 'colorAxis': {colors: ['yellow', 'red']},
+                 'sizeAxis' : {minValue : 0 , maxSize : 20}
+               };
+
+  // Instantiate and draw our chart, passing in some options.
+  var chart = new google.visualization.BubbleChart(document.getElementById('chart_div'));
+  chart.draw(data, options);
+}
+
+    $('a').click(function(){
+    var chart = google.visualization.BubbleChart(document.getElementById('chart_div'));
+    console.log('test');
+  });
+</script>
+
+
+</head>
+
+<body>
+
+<div class=" container-fluid mainBody">
+<div class="mainContainer"> 
+    <h1>Your Data</h1>
+    <p>something go wrong? <a href="HowToPage.HTML"> Click here to return to how to</a></p>
+   <div id="chart_div" ></div>
+          	  <!--Div that will hold the pie chart-->
+    <div id="chart_div"></div>
+      <p>Here is the data printed out in readable format</p>
+      <p>order, Text, Number of times searched, Unix timeStamp</p>
+      <p>To convert Unix timeStamp go <a href="http://www.onlineconversion.com/unix_time.htm" target="_blank">here</a></p>
+
+    <div id = "data"></div>
+
+	</div>
+
+	
+
+</div>
+</body>
+</html>

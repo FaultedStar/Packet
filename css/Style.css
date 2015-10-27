@@ -1,0 +1,92 @@
+@font-face {
+  font-family: 'Seb';
+  src: url("../fonts/seb/SS_0.ttf")
+  format('truetype')
+}
+
+body {	
+  font-family: 'Seb', cursive;
+  background-color: white;
+  padding-top: 40px;
+  padding-bottom: 40px;
+
+background-color: #FFDAB5;
+}
+a {
+
+	color:#E45F0E;
+}
+h1{
+
+	color:#E45F0E;
+}
+
+.mainBody{
+margin: 20px;
+
+border-radius: 25px;
+}
+
+/*used for first page*/
+.OpeningBox{
+	height: 500px;
+	border-radius: 25px;
+	border:  2px solid #F17121;
+	background-color: white;
+}
+.logoImg{
+	max-height: 450px;
+}
+.mission{
+	padding-top: 20px; 
+
+}
+
+/*Used for how to*/
+.HelpBox{
+	height: 500px;
+	border-radius: 25px;
+	border:  2px solid #F17121;
+	background-color: white;
+	padding: 30px;
+
+}
+
+.infoText{
+padding:10px;
+
+}
+.aside{
+
+	padding-top: 15px;
+}
+/*main page things*/
+.mainContainer{
+min-height: 600px;
+border-radius: 25px;
+	border:  2px solid #F17121;
+	background-color: white;
+	padding: 30px;
+	text-align: center;
+}
+.topBar{
+height:125px;
+margin: 0px;
+padding: 0px;
+}
+
+#chart_div{
+	 display: inline-block;
+	 width: 50%;
+    margin: 0 auto;
+}
+
+
+#data a.link{
+color:#803300 ;
+text-decoration: none; 
+}
+/*used for wirefraiming*/
+.border{
+  border:1px solid black;
+}
